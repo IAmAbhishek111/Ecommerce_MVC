@@ -1,6 +1,7 @@
 ﻿using BulkyWeb.Data;
 using BulkyWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BulkyWeb.Controllers
 {
@@ -23,5 +24,29 @@ namespace BulkyWeb.Controllers
         public IActionResult Create() {
            return View();
         }
+        [HttpPost]
+        public IActionResult Create(Category obj)
+
+        {
+            if(obj.Name == obj.DisplayOrder.ToString()) {
+                ModelState.AddModelError("name", "The display order and name cannot be exactly the same");
+
+            }
+        
+            if (ModelState.IsValid) {
+                _db.Categories.Add(obj);   // this line is telling us that we have to add the category object into category table
+
+
+
+                // to execute the changes 
+                _db.SaveChanges();
+            return RedirectToAction("Index");
+            }
+
+            return View();
+          
+
+        }
+
     }
 }
