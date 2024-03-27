@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BulkyWeb.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BulkyWeb.Data
 {
@@ -10,6 +11,10 @@ namespace BulkyWeb.Data
 
 
         }
+
+        /*Adding table in database using EF core*/
+
+        public DbSet<Category> Categories { get; set; }
 
 
     }
