@@ -19,5 +19,9 @@ namespace BulkyWeb.Controllers
             List<Category> objCategoryList = _db.Categories.ToList();
             return View(objCategoryList); // it will show category list  in UI
         }
+
+        public IActionResult Create() {
+           return View();
+        }
     }
 }
