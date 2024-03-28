@@ -7,10 +7,10 @@ namespace BulkyWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        // constructor called
 
         public readonly ApplicationDbContext _db;
 
+        // constructor called
         public CategoryController(ApplicationDbContext db) {
             _db = db;
         }
@@ -36,11 +36,11 @@ namespace BulkyWeb.Controllers
             if (ModelState.IsValid) {
                 _db.Categories.Add(obj);   // this line is telling us that we have to add the category object into category table
 
-
-
                 // to execute the changes 
                 _db.SaveChanges();
-            return RedirectToAction("Index");
+                TempData["Success"] = "Category Created Successfully";
+
+                return RedirectToAction("Index");
             }
 
             return View();
@@ -82,10 +82,9 @@ namespace BulkyWeb.Controllers
             {
                 _db.Categories.Update(obj);   // this line is telling us that we have to update the category object into category table
 
-
-
                 // to execute the changes 
                 _db.SaveChanges();
+                TempData["Success"] = "Category Updated Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -136,6 +135,7 @@ namespace BulkyWeb.Controllers
 
             }
             _db.Categories.Remove(obj);
+            TempData["Success"] = "Category Deleted Successfully";
             _db.SaveChanges();
             return RedirectToAction("Index");
            
@@ -147,3 +147,4 @@ namespace BulkyWeb.Controllers
 
     }
 }
+
