@@ -41,12 +41,6 @@ namespace BulkyRazor_temp.Pages.Categories
            /* TempData["Success"] = "Category Deleted Successfully";*/
             _db.SaveChanges();
             return RedirectToPage("Index");
-                
-
-
-
-
-
             }
         }
 }
