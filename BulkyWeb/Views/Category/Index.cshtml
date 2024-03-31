@@ -1,69 +1,84 @@
 ﻿@model List<Category>
 
-    @* we will loop through category list and display on the Web page *@
 
-<div class="container">
+@* we will loop through category list and display on the Web page *@
 
-    <div class="row pt-4 pb-3">
-        <div class="col-6">
-            <h2>Category List</h2>
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Category List</h2>
+            </div>
         </div>
-        <div class="col-6 text-end">
-            <a  asp-controller="Category" asp-action="Create" class="btn btn-success rounded">
-                <i class="bi bi-plus-circle"></i> Create New Category
-            </a>
-        </div>
-
     </div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th>
-            Category Name
-        </th>
+    <div class="card-body p-4">
+        <div class="row  pb-3">
+            <div class="col-6">
+               
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Category" asp-action="Create" class="btn btn-success rounded">
+                    <i class="bi bi-plus-circle"></i> Create New Category
+                </a>
+            </div>
 
-        <th>
-            Display Order
-        </th>
+        </div>
 
-        <th></th>
-    </tr>
-    </thead>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Category Name
+                    </th>
 
-    <tbody>
-        @* use for loop to get corresponding name and display order *@
-        @foreach(var obj in Model.OrderBy(u => u.DisplayOrder))
-        {
-            <tr>
-                <td>
-                    @obj.Name
-                </td>
+                    <th>
+                        Display Order
+                    </th>
 
-                <td>
-                    @obj.DisplayOrder
-                </td>
+                    <th></th>
+                </tr>
+            </thead>
 
-                <td>
-                    <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Category" asp-action="Edit"  asp-route-id ="@obj.Id" class="btn btn-info mx-2 rounded">
-                                <i class="bi bi-pencil-square"></i>
-                                Edit
+            <tbody>
+                @* use for loop to get corresponding name and display order *@
+                @foreach (var obj in Model.OrderBy(u => u.DisplayOrder))
+                {
+                    <tr>
+                        <td>
+                            @obj.Name
+                        </td>
 
-                        </a>
-                            <a asp-controller="Category" asp-action="Delete" asp-route-id ="@obj.Id" class="btn btn-danger mx-2 rounded ">
-                                <i class="bi bi-trash"></i>
+                        <td>
+                            @obj.DisplayOrder
+                        </td>
+
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-info mx-2 rounded">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Edit
+
+                                </a>
+                                <a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger mx-2 rounded ">
+                                    <i class="bi bi-trash"></i>
 
 
-                                Delete
+                                    Delete
 
-                            </a>
+                                </a>
 
-                    </div>
+                            </div>
 
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
 </div>
+
+
+
+
