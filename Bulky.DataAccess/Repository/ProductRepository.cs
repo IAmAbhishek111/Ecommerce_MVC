@@ -24,12 +24,12 @@ namespace Bulky.DataAccess.Repository
 
             }
 
-            public void update(Product obj)
+            public void Update(Product obj)
             {
                 _db.Products.Update(obj);
             }
 
-       
+        
     }
 
 
