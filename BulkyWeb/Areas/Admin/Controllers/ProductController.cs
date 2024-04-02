@@ -1,8 +1,13 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
 using Bulky.DataAcess.Data;
 using Bulky.Models;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
@@ -21,7 +26,18 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
-            return View(objProductList); // it will show category list  in UI
+
+            //That way what will happen is each category object here will be converted into a select list item and it will have a text and a value.
+
+            //And that is how we can convert a category to an IEnumerable of select list item using projection.
+
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+
+            }); ;   
+            return View(objProductList); // it will show product list  in UI
         }
 
         public IActionResult Create()
@@ -35,7 +51,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj);   // this line is telling us that we have to add the category object into category table
+                _unitOfWork.Product.Add(obj);   // this line is telling us that we have to add the product object into product table
 
                 // to execute the changes 
                 _unitOfWork.Save();
@@ -57,9 +73,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
 
             }
             Product? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-            /*Product? categoryFromDb1 = _db.Categories.FirstOrDefault(u => u.Id == id);
-            Product? categoryFromDb2 = _db.Categories.Where(u => u.Id == id).FirstOrDefault();*/
-
+      
 
             if (productFromDb == null)
             {
@@ -73,15 +87,9 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult Edit(Product obj)
 
         {
-            /*  if (obj.Name == obj.DisplayOrder.ToString())
-              {
-                  ModelState.AddModelError("name", "The display order and name cannot be exactly the same");
-
-              }
-  */
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Update(obj);   // this line is telling us that we have to update the category object into category table
+                _unitOfWork.Product.Update(obj);   // this line is telling us that we have to update the Product object into category table
 
                 // to execute the changes 
                 _unitOfWork.Save();
@@ -103,9 +111,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
 
             }
             Product? categoryFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-            /*Product? categoryFromDb1 = _db.Categories.FirstOrDefault(u => u.Id == id);
-            Product? categoryFromDb2 = _db.Categories.Where(u => u.Id == id).FirstOrDefault();*/
-
+   
 
             if (categoryFromDb == null)
             {
@@ -119,11 +125,6 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult DeletePost(int? id)
 
         {
-            /*  if (obj.Name == obj.DisplayOrder.ToString())
-              {
-                  ModelState.AddModelError("name", "The display order and name cannot be exactly the same");
-
-              } */
             Product obj = _unitOfWork.Product.Get(u => u.Id == id);
 
             if (obj == null)
