@@ -85,7 +85,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
 
             if (ModelState.IsValid)
-            {/*
+            {
+                
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
 
                 if(file != null)
@@ -103,7 +104,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     productVM.Product.ImageUrl = @"\images\product\"  + fileName;
 
                 }
-                 */
+                
+                 
 
                 _unitOfWork.Product.Add(productVM.Product);   // this line is telling us that we have to add the product object into product table
 
