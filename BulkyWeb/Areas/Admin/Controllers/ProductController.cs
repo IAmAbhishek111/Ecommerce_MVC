@@ -2,15 +2,18 @@
 using Bulky.DataAcess.Data;
 using Bulky.Models;
 using Bulky.Models.ViewModels;
-using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections.Generic;
+/*using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection.Metadata.Ecma335;
-using System.Text;
+using System.Text;*/
+using System.Data;
+
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
@@ -31,7 +34,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         /*This is the action method */
         public IActionResult Index()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties :"Category").ToList();
 
             
 
@@ -72,7 +75,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             else
             {
                 //update
-                productVM.Product = _unitOfWork.Product.Get( u => u.Id == id);
+                productVM.Product = _unitOfWork.Product.Get( u => u.Id == id );
                 return View(productVM);
 
             }
@@ -94,6 +97,22 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);    
                     string ProductPath = Path.Combine(wwwRootPath , @"images\product");
 
+
+                    if(!string
+                        .IsNullOrEmpty(productVM
+                        .Product.ImageUrl)) 
+                    {
+                        //Delete the old image
+
+                        var oldImagePath = Path.Combine(wwwRootPath , productVM.Product.ImageUrl.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }                    
+                    }
+
+
                     using (var filestream = new FileStream(Path.Combine(ProductPath , fileName), FileMode.Create))
                     {
                         file.CopyTo(filestream);
@@ -104,14 +123,20 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     productVM.Product.ImageUrl = @"\images\product\"  + fileName;
 
                 }
-                
-                 
 
-                _unitOfWork.Product.Add(productVM.Product);   // this line is telling us that we have to add the product object into product table
+                if(productVM.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(productVM.Product);   // this line is telling us that we have to add the product object into product table
+                }
+                else
+                { 
+                    _unitOfWork.Product.Update(productVM.Product);
 
+                }                                 
+               
                 // to execute the changes 
                 _unitOfWork.Save();
-                TempData["Success"] = "Product Created Successfully";
+                TempData["Success"] = "Product created/Updated Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -206,6 +231,16 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return RedirectToAction("Index");
 
         }
+
+        #region APICALLS
+        [HttpGet]
+        public IActionResult GetAll() {
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+
+            return Json(new {data = objProductList});   
+
+        }
+        #endregion
 
     }
 }

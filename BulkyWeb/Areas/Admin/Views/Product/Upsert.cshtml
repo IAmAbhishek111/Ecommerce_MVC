@@ -4,7 +4,7 @@
     <div class="card-header bg-secondary bg-gradient m-lg-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">@(Model.Product.Id!=0? "Update" :"Create") Product</h2>
+                <h2 class="text-white py-2">@(Model.Product.Id != 0? "Update" :"Create") Product</h2>
             </div>
         </div>
     </div>
@@ -12,12 +12,14 @@
     <div class="card-body p-4">
         <form method="post" class="row" enctype="multipart/form-data">
              <input asp-for="Product.Id" hidden/>
+             <input asp-for="Product.ImageUrl" hidden/>
+
 
              <div class="row">
                  <div class="col-10">
                     <div class="border p-3 ">
 
-                        @* <div asp-validation-summary="ModelOnly"></div> *@
+                        @* <div asp-validation-summary="modelonly"></div> *@
                         <div class="form-floating py-2 col-12">
                             <input asp-for="Product.Title" class="form-control border-0 shadow" />
                             <label asp-for="Product.Title" class="ms-2"></label>
@@ -76,7 +78,7 @@
                         </div>
                         <div class="form-floating py-2 col-12">
                             <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select border-0 shadow">
-                                <option disabled selected>--Select Category--</option>
+                                <option disabled selected>--select category--</option>
                             </select>
                             <label asp-for="Product.CategoryId" class="ms-2"></label>
                             <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
@@ -106,42 +108,40 @@
                             </div>
                             <div class="col-6 col-md-3">
 
-                                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary border form-control">Back to List</a>
+                                <a asp-controller="Product" asp-action="index" class="btn btn-outline-primary border form-control">Back to list</a>
                             </div>
 
                         </div>
-
-
                     </div>
                  </div>
                  <div class="col-2">
                      <img src="@Model.Product.ImageUrl" width="100%" style="border-radius: 5px; border: 1px solid #bbb9b9" />
                  </div>
-             </div>
-
-            
+             </div>           
         </form>
     </div>
 </div>
 
 
-@section Scripts{
+@section scripts{
     <script>
         tinymce.init({
             selector: 'textarea',
             plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
             toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
             tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
+            tinycomments_author: 'author name',
             mergetags_list: [
-                { value: 'First.Name', title: 'First Name' },
-                { value: 'Email', title: 'Email' },
+                { value: 'first.name', title: 'first name' },
+                { value: 'email', title: 'email' },
             ],
-            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+            ai_request: (request, respondwith) => respondwith.string(() => promise.reject("see docs to implement ai assistant")),
         });
     </script>
 
     @{
-        <partial name="_ValidationScriptsPartial" />
+          
+    <partial name="_ValidationScriptsPartial"/>
+    
     }
 }
