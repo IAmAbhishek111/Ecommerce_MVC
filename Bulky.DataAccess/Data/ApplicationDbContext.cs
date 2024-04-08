@@ -1,13 +1,16 @@
 ﻿using Bulky.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bulky.DataAcess.Data
+namespace Bulky.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             // if we have to do any registration we will do in program.cs
+            
         }
 
         /*Adding table in database using EF core*/
@@ -17,6 +20,8 @@ namespace Bulky.DataAcess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
                 new Category { Id = 2, Name = "Sci-Fi", DisplayOrder = 2 },

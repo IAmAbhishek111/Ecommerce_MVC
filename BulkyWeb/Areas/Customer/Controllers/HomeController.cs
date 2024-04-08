@@ -1,6 +1,8 @@
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace BulkyWeb.Areas.Customer.Controllers
@@ -24,6 +26,15 @@ namespace BulkyWeb.Areas.Customer.Controllers
             IEnumerable <Product> productList = _unitOfWork.Product.GetAll(includeProperties : "Category");
 
             return View(productList);
+        }
+
+        public IActionResult Details(int productId)
+        {
+
+          Product product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category");
+
+           return View(product);
+
         }
 
         public IActionResult Privacy()
