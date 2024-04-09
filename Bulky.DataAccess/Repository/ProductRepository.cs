@@ -1,5 +1,5 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
-using Bulky.DataAcess.Data;
+using Bulky.DataAccess.Data;
 using Bulky.Models;
 using System;
 using System.Collections.Generic;
