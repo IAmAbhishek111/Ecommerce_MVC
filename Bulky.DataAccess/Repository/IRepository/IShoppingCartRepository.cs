@@ -9,7 +9,7 @@ namespace Bulky.DataAccess.Repository.IRepository
 {
     public interface IShoppingCartRepository : IRepository<ShoppingCart>
     {
-        void update(ShoppingCart obj);
+        void Update(ShoppingCart obj);
       
 
 

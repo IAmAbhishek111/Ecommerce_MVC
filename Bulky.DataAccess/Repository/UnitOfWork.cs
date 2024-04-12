@@ -16,10 +16,9 @@ namespace Bulky.DataAccess.Repository
 
         public ICompanyRepository Company { get; private set; }
         public IShoppingCartRepository ShoppingCart { get; private set; }
-        public IApplicationUserRepository applicationUserRepository { get; private set; }
+        public IApplicationUserRepository ApplicationUser { get; private set; }
 
-        public IApplicationUserRepository ApplicationUser => throw new NotImplementedException();
-
+       
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;   
@@ -27,15 +26,13 @@ namespace Bulky.DataAccess.Repository
             Product = new ProductRepository(_db);
             Company = new CompanyRepository(_db);
             ShoppingCart = new ShoppingCartRepository(_db);
-            applicationUserRepository = new ApplicationUserRepository(_db);
-
+            ApplicationUser = new ApplicationUserRepository(_db);
         }
- 
 
         public void Save()
         {
-            _db.SaveChanges();  
-
+            _db.SaveChanges();
         }
+
     }
 }

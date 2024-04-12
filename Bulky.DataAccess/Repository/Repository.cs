@@ -9,6 +9,7 @@ using Bulky.DataAccess.Repository.IRepository;
 using Bulky.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace Bulky.DataAccess.Repository
@@ -22,7 +23,7 @@ namespace Bulky.DataAccess.Repository
         {
             _db = db;
             this.dbSet = _db.Set<T>();  //the dbSet will set to Categories.
-            _db.Products.Include( u => u.Category ).Include(u => u.CategoryId) ;
+            _db.Products.Include(u => u.Category).Include(u => u.CategoryId);
 
         }
         public void Add(T entity)
@@ -32,14 +33,27 @@ namespace Bulky.DataAccess.Repository
 
         public void Delete(T entity)
         {
-           dbSet.Remove(entity);
+            dbSet.Remove(entity);
 
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            IQueryable<T> query = dbSet;
-            query =  query.Where(filter);
+            IQueryable<T> query;
+
+
+            if (tracked)
+            {
+                query = dbSet;
+
+            }
+
+            else
+            {
+                query = dbSet.AsNoTracking();
+
+            }
+            query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -54,21 +68,22 @@ namespace Bulky.DataAccess.Repository
 
         }
 
-        
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet; // it will have the all the record in the dbSet
-            if(!string.IsNullOrEmpty(includeProperties))
+            if (filter != null)
             {
-                foreach(var property in includeProperties.Split(new char[] {','} , StringSplitOptions.RemoveEmptyEntries)) {
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
                     query = query.Include(property);
 
                 }
             }
             return query.ToList();  // we will convert and return to List
-
-
-
         }
 
         public void RemoveRange(IEnumerable<T> entity)

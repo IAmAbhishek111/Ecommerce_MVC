@@ -16,6 +16,7 @@ namespace Bulky.DataAccess.Repository
 
         private ApplicationDbContext _db;
 
+
         //That way, whatever DB context we get here, we will pass to the repository and the error goes away.
         public ApplicationUserRepository(ApplicationDbContext db) : base(db) 
         {
