@@ -30,6 +30,8 @@ namespace Bulky.Models
         public DateTime PaymentDate { get; set; }
         public DateOnly PaymentDueDate { get; set; }
 
+        public string? SessionId { get; set; }
+
         public string? PaymentIntentId { get; set; }
 
         [Required]
@@ -45,10 +47,7 @@ namespace Bulky.Models
         [Required]
         public string Name { get; set; }
 
-        public void Update(OrderHeader obj)
-        {
-            throw new NotImplementedException();
-        }
+    
     }
 
 
